@@ -11,7 +11,6 @@
 
 (add-to-list 'el-get-recipe-path "~/.emacs.d/el-get-user/recipes")
 (el-get 'sync)
-
 ;; tool-bar
 (tool-bar-mode -1)
 
@@ -53,3 +52,6 @@
 ;; buffer-menu
 (global-set-key (kbd "C-c m") 'buffer-menu)
 
+;; tabbar mode
+(require 'tabbar)
+(tabbar-mode t)
