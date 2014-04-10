@@ -1,1 +1,1 @@
-(color-theme-classic)
+(color-theme-gnome2)
