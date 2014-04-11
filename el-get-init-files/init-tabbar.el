@@ -1,8 +1,8 @@
 (tabbar-mode 1)
 (global-set-key (kbd "C-M-'")    'tabbar-backward-group)  
 (global-set-key (kbd "C-M-;")  'tabbar-forward-group)
-(global-set-key (kbd "M-1") 'tabbar-backward-tab)
-(global-set-key (kbd "M-2") 'tabbar-forward-tab) 
+(global-set-key (kbd "C-'") 'tabbar-backward-tab)
+(global-set-key (kbd "C-;") 'tabbar-forward-tab) 
 
 (setq  
  tabbar-scroll-left-help-function nil   ;don't show help information  

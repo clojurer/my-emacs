@@ -1,0 +1,4 @@
+(setq my-packages
+      '(browse-kill-ring color-theme dash el-get epl flx grep-a-lot grizzl helm lua-mode pkg-info projectile s session tabbar))
+
+

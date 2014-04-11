@@ -70,6 +70,7 @@
  '(blink-cursor-mode nil)
  '(column-number-mode t)
  '(display-time-mode t)
+ '(lua-indent-level 4)
  '(session-use-package t nil (session))
  '(show-paren-mode t)
  '(tool-bar-mode nil))
@@ -100,3 +101,9 @@
 (load "desktop") 
 (desktop-load-default) 
 (desktop-read)
+
+;; 去掉滚动条
+(scroll-bar-mode nil)
+
+;; 标题栏显示点有用的东西
+(setq frame-title-format "%n%F/%b")
