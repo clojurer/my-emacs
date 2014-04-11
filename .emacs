@@ -105,5 +105,7 @@
 ;; 去掉滚动条
 (scroll-bar-mode nil)
 
-;; 标题栏显示点有用的东西
-(setq frame-title-format "%n%F/%b")
+;; show path of the file in the title
+(setq frame-title-format  
+      '("%S" (buffer-file-name "%f"  
+                   (dired-directory dired-directory "%b"))))
