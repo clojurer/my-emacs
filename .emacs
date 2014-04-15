@@ -128,3 +128,9 @@
 (global-set-key (kbd "M-9") 'windmove-down)
 (global-set-key (kbd "M-1") 'windmove-left)
 (global-set-key (kbd "M-2") 'windmove-right)
+
+;; enter to indent
+(global-set-key (kbd "RET") 'newline-and-indent)
+
+;; c-x o命令太长，回车已经可以取代c-j
+(global-set-key (kbd "C-j") 'other-window)
