@@ -73,6 +73,7 @@
  '(lua-indent-level 4)
  '(session-use-package t nil (session))
  '(show-paren-mode t)
+ '(tab-width 4)
  '(tool-bar-mode nil))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
@@ -95,7 +96,7 @@
 
 ;; enable ibuffer
 (require 'ibuffer)
-(global-set-key (kbd "C-x C-b") 'ibuffer)
+(global-set-key (kbd "C-c m") 'ibuffer)
 
 ;; desktop.el
 (load "desktop") 
@@ -109,3 +110,21 @@
 (setq frame-title-format  
       '("%S" (buffer-file-name "%f"  
                    (dired-directory dired-directory "%b"))))
+
+;; 注释代码
+(global-set-key (kbd "C-c C-/")'comment-or-uncomment-region)
+
+;; 翻页更加平滑
+(setq scroll-margin 3 scroll-conservatively 10000)
+
+;; rename a buffer
+(global-set-key (kbd "C-c n") 'rename-buffer)
+
+;; open a new shell
+(global-set-key (kbd "C-c l") 'shell)
+
+;; window move
+(global-set-key (kbd "M-0") 'windmove-up)
+(global-set-key (kbd "M-9") 'windmove-down)
+(global-set-key (kbd "M-1") 'windmove-left)
+(global-set-key (kbd "M-2") 'windmove-right)
