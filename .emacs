@@ -10,9 +10,8 @@
     (eval-print-last-sexp)))
 
 (add-to-list 'el-get-recipe-path "~/.emacs.d/el-get-user/recipes")
+(add-to-list 'custom-theme-load-path "~/.emacs.d/themes")
 (el-get 'sync)
-;; tool-bar
-(tool-bar-mode -1)
 
 ;;禁用启动画面
 (setq inhibit-startup-message t)
@@ -49,12 +48,6 @@
 ;;空格缩进
 (setq-default indent-tabs-mode nil)
 
-;; buffer-menu
-(global-set-key (kbd "C-c m") 'buffer-menu)
-
-;; 光标不要闪烁
-(blink-cursor-mode -1)
-
 ;; 默认gc分配20MB
 (setq gc-cons-threshold 20000000)
 
@@ -69,8 +62,11 @@
  ;; If there is more than one, they won't work right.
  '(blink-cursor-mode nil)
  '(column-number-mode t)
+ '(custom-safe-themes (quote ("9fd20670758db15cc4d0b4442a74543888d2e445646b25f2755c65dcd6f1504b" default)))
  '(display-time-mode t)
+ '(global-linum-mode t)
  '(lua-indent-level 4)
+ '(scroll-bar-mode nil)
  '(session-use-package t nil (session))
  '(show-paren-mode t)
  '(tab-width 4)
@@ -81,10 +77,6 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  )
-
-;; kill-line的时候kill整个line，包括最后的回车
-(setq kill-whole-line t)
-
 ;; 我讨厌波浪号后缀的文件
 (setq backup-by-copying t)  ; 备份文件
 (setq backup-directory-alist '(("." . "~/.emacs_saved_file")))  ;设置备份目录
@@ -96,15 +88,7 @@
 
 ;; enable ibuffer
 (require 'ibuffer)
-(global-set-key (kbd "C-c m") 'ibuffer)
-
-;; desktop.el
-(load "desktop") 
-(desktop-load-default) 
-(desktop-read)
-
-;; 去掉滚动条
-(scroll-bar-mode nil)
+(global-set-key (kbd "C-x C-b") 'ibuffer)
 
 ;; show path of the file in the title
 (setq frame-title-format  
@@ -115,7 +99,7 @@
 (global-set-key (kbd "C-c C-/")'comment-or-uncomment-region)
 
 ;; 翻页更加平滑
-(setq scroll-margin 3 scroll-conservatively 10000)
+(setq scroll-margin 5 scroll-conservatively 10000)
 
 ;; rename a buffer
 (global-set-key (kbd "C-c n") 'rename-buffer)
@@ -133,4 +117,106 @@
 (global-set-key (kbd "RET") 'newline-and-indent)
 
 ;; c-x o命令太长，回车已经可以取代c-j
-(global-set-key (kbd "C-j") 'other-window)
+;;(global-set-key (kbd "C-j") 'other-window)
+
+;; 向前删一词
+(global-set-key (kbd "C-j") 'backward-kill-word)
+
+;; 跳转括号
+(global-set-key (kbd "M-n") 'forward-list)
+(global-set-key (kbd "M-p") 'backward-list)
+
+(defvar emacs-english-font "Monaco"
+  "The font name of English.")
+
+(defvar emacs-cjk-font "Hiragino Sans GB W3"
+  "The font name for CJK.")
+
+(defvar emacs-font-size-pair '(15 . 18)
+  "Default font size pair for (english . chinese)")
+
+(defvar emacs-font-size-pair-list
+  '(( 5 .  6) (10 . 12)
+    (13 . 16) (15 . 18) (17 . 20)
+    (19 . 22) (20 . 24) (21 . 26)
+    (24 . 28) (26 . 32) (28 . 34)
+    (30 . 36) (34 . 40) (36 . 44))
+  "This list is used to store matching (englis . chinese) font-size.")
+
+(defun font-exist-p (fontname)
+  "Test if this font is exist or not."
+  (if (or (not fontname) (string= fontname ""))
+      nil
+    (if (not (x-list-fonts fontname)) nil t)))
+
+(defun set-font (english chinese size-pair)
+  "Setup emacs English and Chinese font on x window-system."
+
+  (if (font-exist-p english)
+      (set-frame-font (format "%s:pixelsize=%d" english (car size-pair)) t))
+
+  (if (font-exist-p chinese)
+      (dolist (charset '(kana han symbol cjk-misc bopomofo))
+        (set-fontset-font (frame-parameter nil 'font) charset
+                          (font-spec :family chinese :size (cdr size-pair))))))
+(set-font emacs-english-font emacs-cjk-font emacs-font-size-pair)
+
+(defun emacs-step-font-size (step)
+  "Increase/Decrease emacs's font size."
+  (let ((scale-steps emacs-font-size-pair-list))
+    (if (< step 0) (setq scale-steps (reverse scale-steps)))
+    (setq emacs-font-size-pair
+          (or (cadr (member emacs-font-size-pair scale-steps))
+              emacs-font-size-pair))
+    (when emacs-font-size-pair
+      (message "emacs font size set to %.1f" (car emacs-font-size-pair))
+      (set-font emacs-english-font emacs-cjk-font emacs-font-size-pair))))
+
+(defun increase-emacs-font-size ()
+  "Decrease emacs's font-size acording emacs-font-size-pair-list."
+  (interactive) (emacs-step-font-size 1))
+
+(defun decrease-emacs-font-size ()
+  "Increase emacs's font-size acording emacs-font-size-pair-list."
+  (interactive) (emacs-step-font-size -1))
+
+(global-set-key (kbd "C-=") 'increase-emacs-font-size)
+(global-set-key (kbd "C--") 'decrease-emacs-font-size)
+
+;; goto char
+(defun wy-go-to-char (n char)
+  "Move forward to Nth occurence of CHAR.
+Typing `wy-go-to-char-key' again will move forwad to the next Nth
+occurence of CHAR."
+  (interactive "p\ncGo to char forward: ")
+  (search-forward (string char) nil nil n)
+  (while (char-equal (read-char)
+		     char)
+    (search-forward (string char) nil nil n))
+  (setq unread-command-events (list last-input-event)))
+
+(defun wy-go-to-char-back (n char)
+  "Move forward to Nth occurence of CHAR.
+Typing `wy-go-to-char-key' again will move forwad to the next Nth
+occurence of CHAR."
+  (interactive "p\ncGo to char backward: ")
+  (search-backward (string char) nil nil n)
+  (while (char-equal (read-char)
+		     char)
+    (search-backward (string char) nil nil n))
+  (setq unread-command-events (list last-input-event)))
+
+(define-key global-map (kbd "<end>") 'wy-go-to-char-back)
+(define-key global-map (kbd "<home>") 'wy-go-to-char)
+
+;; monokai-theme
+;;(require 'color-theme-monokai)
+;;(load-theme 'monokai t)
+
+(load "~/.emacs.d/themes/color-theme-molokai.el")
+(color-theme-molokai)
+
+;; desktop.el
+(load "desktop") 
+(desktop-load-default) 
+(desktop-read)
