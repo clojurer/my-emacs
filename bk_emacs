@@ -1,0 +1,11 @@
+#!/bin/bash
+
+cd ~
+cp .emacs ~/my-emacs
+cp -rf .emacs.d/themes ~/my-emacs
+cp -rf .emacs.d/el-get-init-files ~/my-emacs
+echo "backup emacs config files end."
+echo "switch to ~/my-emacs..."
+
+cd ~/my-emacs
+git status

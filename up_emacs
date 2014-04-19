@@ -1,0 +1,7 @@
+#!/bin/bash
+
+cd ~/my-emacs
+cp ./.emacs ~
+cp -rf ./el-get-init-files ~/.emacs.d/
+cp -rf ./themes ~/.emacs.d/
+echo "update emacs config files end."
