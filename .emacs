@@ -102,10 +102,10 @@
 (setq scroll-margin 5 scroll-conservatively 10000)
 
 ;; rename a buffer
-(global-set-key (kbd "C-c n") 'rename-buffer)
+;;(global-set-key (kbd "C-c n") 'rename-buffer)
 
 ;; open a new shell
-(global-set-key (kbd "C-c l") 'shell)
+;;(global-set-key (kbd "C-c l") 'shell)
 
 ;; window move
 (global-set-key (kbd "M-0") 'windmove-up)
@@ -206,8 +206,8 @@ occurence of CHAR."
     (search-backward (string char) nil nil n))
   (setq unread-command-events (list last-input-event)))
 
-(define-key global-map (kbd "<end>") 'wy-go-to-char-back)
-(define-key global-map (kbd "<home>") 'wy-go-to-char)
+(define-key global-map (kbd "C-c l") 'wy-go-to-char-back)
+(define-key global-map (kbd "C-c k") 'wy-go-to-char)
 
 ;; monokai-theme
 ;;(require 'color-theme-monokai)
@@ -215,6 +215,9 @@ occurence of CHAR."
 
 (load "~/.emacs.d/themes/color-theme-molokai.el")
 (color-theme-molokai)
+
+;; 高亮当前行
+(global-hl-line-mode 1)
 
 ;; desktop.el
 (load "desktop") 
