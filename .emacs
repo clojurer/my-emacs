@@ -39,8 +39,7 @@
 (display-time)
 ;;时间格式
 (setq display-time-24hr-format t)
-(setq display-time-day-and-date t)
-(setq display-time-interval 10)
+(setq display-time-interval 30)
 
 ;;显示列号
 (setq column-number-mode t)
@@ -51,10 +50,6 @@
 ;; 默认gc分配20MB
 (setq gc-cons-threshold 20000000)
 
-;; tabbar mode
-(require 'tabbar)
-(tabbar-mode t)
-
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -64,11 +59,11 @@
  '(column-number-mode t)
  '(custom-safe-themes (quote ("9fd20670758db15cc4d0b4442a74543888d2e445646b25f2755c65dcd6f1504b" default)))
  '(display-time-mode t)
- '(global-linum-mode t)
  '(lua-indent-level 4)
  '(scroll-bar-mode nil)
  '(session-use-package t nil (session))
  '(show-paren-mode t)
+ '(menu-bar-mode nil)
  '(tab-width 4)
  '(tool-bar-mode nil))
 (custom-set-faces
@@ -96,92 +91,79 @@
                    (dired-directory dired-directory "%b"))))
 
 ;; 注释代码
-(global-set-key (kbd "C-c C-/")'comment-or-uncomment-region)
+(global-set-key (kbd "C-c C-_")'comment-or-uncomment-region)
 
 ;; 翻页更加平滑
 (setq scroll-margin 5 scroll-conservatively 10000)
 
-;; rename a buffer
-;;(global-set-key (kbd "C-c n") 'rename-buffer)
-
-;; open a new shell
-;;(global-set-key (kbd "C-c l") 'shell)
-
 ;; window move
-(global-set-key (kbd "M-0") 'windmove-up)
-(global-set-key (kbd "M-9") 'windmove-down)
-(global-set-key (kbd "M-1") 'windmove-left)
-(global-set-key (kbd "M-2") 'windmove-right)
+(global-set-key (kbd "C-c w k") 'windmove-up)
+(global-set-key (kbd "C-c w j") 'windmove-down)
+(global-set-key (kbd "C-c w h") 'windmove-left)
+(global-set-key (kbd "C-c w l") 'windmove-right)
 
 ;; enter to indent
 (global-set-key (kbd "RET") 'newline-and-indent)
 
-;; c-x o命令太长，回车已经可以取代c-j
-;;(global-set-key (kbd "C-j") 'other-window)
-
 ;; 向前删一词
 (global-set-key (kbd "C-j") 'backward-kill-word)
 
-;; 跳转括号
-(global-set-key (kbd "M-n") 'forward-list)
-(global-set-key (kbd "M-p") 'backward-list)
+;; (defvar emacs-english-font "Monaco"
+;;   "The font name of English.")
 
-(defvar emacs-english-font "Monaco"
-  "The font name of English.")
+;; (defvar emacs-cjk-font "Hiragino Sans GB W3"
+;;   "The font name for CJK.")
 
-(defvar emacs-cjk-font "Hiragino Sans GB W3"
-  "The font name for CJK.")
+;; (defvar emacs-font-size-pair '(15 . 18)
+;;   "Default font size pair for (english . chinese)")
 
-(defvar emacs-font-size-pair '(15 . 18)
-  "Default font size pair for (english . chinese)")
+;; (defvar emacs-font-size-pair-list
+;;   '(( 5 .  6) (10 . 12)
+;;     (13 . 16) (15 . 18) (17 . 20)
+;;     (19 . 22) (20 . 24) (21 . 26)
+;;     (24 . 28) (26 . 32) (28 . 34)
+;;     (30 . 36) (34 . 40) (36 . 44))
+;;   "This list is used to store matching (englis . chinese) font-size.")
 
-(defvar emacs-font-size-pair-list
-  '(( 5 .  6) (10 . 12)
-    (13 . 16) (15 . 18) (17 . 20)
-    (19 . 22) (20 . 24) (21 . 26)
-    (24 . 28) (26 . 32) (28 . 34)
-    (30 . 36) (34 . 40) (36 . 44))
-  "This list is used to store matching (englis . chinese) font-size.")
+;; (defun font-exist-p (fontname)
+;;   "Test if this font is exist or not."
+;;   (if (or (not fontname) (string= fontname ""))
+;;       nil
+;;     (if (not (x-list-fonts fontname)) nil t)))
 
-(defun font-exist-p (fontname)
-  "Test if this font is exist or not."
-  (if (or (not fontname) (string= fontname ""))
-      nil
-    (if (not (x-list-fonts fontname)) nil t)))
+;; (defun set-font (english chinese size-pair)
+;;   "Setup emacs English and Chinese font on x window-system."
 
-(defun set-font (english chinese size-pair)
-  "Setup emacs English and Chinese font on x window-system."
+;;   (if (font-exist-p english)
+;;       (set-frame-font (format "%s:pixelsize=%d" english (car size-pair)) t))
 
-  (if (font-exist-p english)
-      (set-frame-font (format "%s:pixelsize=%d" english (car size-pair)) t))
+;;   (if (font-exist-p chinese)
+;;       (dolist (charset '(kana han symbol cjk-misc bopomofo))
+;;         (set-fontset-font (frame-parameter nil 'font) charset
+;;                           (font-spec :family chinese :size (cdr size-pair))))))
+;; (set-font emacs-english-font emacs-cjk-font emacs-font-size-pair)
 
-  (if (font-exist-p chinese)
-      (dolist (charset '(kana han symbol cjk-misc bopomofo))
-        (set-fontset-font (frame-parameter nil 'font) charset
-                          (font-spec :family chinese :size (cdr size-pair))))))
-(set-font emacs-english-font emacs-cjk-font emacs-font-size-pair)
+;; (defun emacs-step-font-size (step)
+;;   "Increase/Decrease emacs's font size."
+;;   (let ((scale-steps emacs-font-size-pair-list))
+;;     (if (< step 0) (setq scale-steps (reverse scale-steps)))
+;;     (setq emacs-font-size-pair
+;;           (or (cadr (member emacs-font-size-pair scale-steps))
+;;               emacs-font-size-pair))
+;;     (when emacs-font-size-pair
+;;       (message "emacs font size set to %.1f" (car emacs-font-size-pair))
+;;       (set-font emacs-english-font emacs-cjk-font emacs-font-size-pair))))
 
-(defun emacs-step-font-size (step)
-  "Increase/Decrease emacs's font size."
-  (let ((scale-steps emacs-font-size-pair-list))
-    (if (< step 0) (setq scale-steps (reverse scale-steps)))
-    (setq emacs-font-size-pair
-          (or (cadr (member emacs-font-size-pair scale-steps))
-              emacs-font-size-pair))
-    (when emacs-font-size-pair
-      (message "emacs font size set to %.1f" (car emacs-font-size-pair))
-      (set-font emacs-english-font emacs-cjk-font emacs-font-size-pair))))
+;; (defun increase-emacs-font-size ()
+;;   "Decrease emacs's font-size acording emacs-font-size-pair-list."
+;;   (interactive) (emacs-step-font-size 1))
 
-(defun increase-emacs-font-size ()
-  "Decrease emacs's font-size acording emacs-font-size-pair-list."
-  (interactive) (emacs-step-font-size 1))
+;; (defun decrease-emacs-font-size ()
+;;   "Increase emacs's font-size acording emacs-font-size-pair-list."
+;;   (interactive) (emacs-step-font-size -1))
 
-(defun decrease-emacs-font-size ()
-  "Increase emacs's font-size acording emacs-font-size-pair-list."
-  (interactive) (emacs-step-font-size -1))
-
-(global-set-key (kbd "C-=") 'increase-emacs-font-size)
-(global-set-key (kbd "C--") 'decrease-emacs-font-size)
+;; (global-set-key (kbd "C-right") 'increase-emacs-font-size)
+;; (global-set-key (kbd "C-left") 'decrease-emacs-font-size)
 
 ;; goto char
 (defun wy-go-to-char (n char)
@@ -209,15 +191,8 @@ occurence of CHAR."
 (define-key global-map (kbd "C-c l") 'wy-go-to-char-back)
 (define-key global-map (kbd "C-c k") 'wy-go-to-char)
 
-;; monokai-theme
-;;(require 'color-theme-monokai)
-;;(load-theme 'monokai t)
-
 (load "~/.emacs.d/themes/color-theme-molokai.el")
 (color-theme-molokai)
-
-;; 高亮当前行
-(global-hl-line-mode 1)
 
 ;; desktop.el
 (load "desktop") 
