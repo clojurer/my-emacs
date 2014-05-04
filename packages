@@ -1,4 +1,4 @@
 (setq my-packages
-      '(auto-complete browse-kill-ring color-theme dash el-get epl flx fuzzy grep-a-lot grizzl helm lua-mode pkg-info popup projectile s session tabbar))
+      '(ack-and-a-half ag auto-complete browse-kill-ring color-theme dash el-get epl flx fuzzy grep-a-lot grizzl helm lua-mode monokai-theme pkg-info popup projectile s session))
 (el-get 'sync my-packages)
 
