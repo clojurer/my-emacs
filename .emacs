@@ -61,7 +61,6 @@
  '(display-time-mode t)
  '(lua-indent-level 4)
  '(scroll-bar-mode nil)
- '(session-use-package t nil (session))
  '(show-paren-mode t)
  '(menu-bar-mode nil)
  '(tab-width 4)
@@ -108,6 +107,7 @@
 ;; 向前删一词
 (global-set-key (kbd "C-j") 'backward-kill-word)
 
+;;字体（只能在UI下用，nw模式下要注释这段代码）
 ;; (defvar emacs-english-font "Monaco"
 ;;   "The font name of English.")
 
@@ -162,8 +162,9 @@
 ;;   "Increase emacs's font-size acording emacs-font-size-pair-list."
 ;;   (interactive) (emacs-step-font-size -1))
 
-;; (global-set-key (kbd "C-right") 'increase-emacs-font-size)
-;; (global-set-key (kbd "C-left") 'decrease-emacs-font-size)
+;; (global-set-key (kbd "C-<right>") 'increase-emacs-font-size)
+;; (global-set-key (kbd "C-<left>") 'decrease-emacs-font-size)
+;;字体（只能在UI下用，nw模式下要注释这段代码）
 
 ;; goto char
 (defun wy-go-to-char (n char)
@@ -171,7 +172,7 @@
 Typing `wy-go-to-char-key' again will move forwad to the next Nth
 occurence of CHAR."
   (interactive "p\ncGo to char forward: ")
-  (search-forward (string char) nil nil n)
+
   (while (char-equal (read-char)
 		     char)
     (search-forward (string char) nil nil n))
@@ -191,10 +192,23 @@ occurence of CHAR."
 (define-key global-map (kbd "C-c l") 'wy-go-to-char-back)
 (define-key global-map (kbd "C-c k") 'wy-go-to-char)
 
+(global-set-key (kbd "C-c C-n") 'end-of-defun)
+(global-set-key (kbd "C-c C-p") 'beginning-of-defun)
+(global-set-key (kbd "C-c ;") 'beginning-of-buffer)
+(global-set-key (kbd "C-c '") 'end-of-buffer)
+
+(defun set-current-bookmark ()
+  (interactive)
+  (progn
+    (bookmark-set "current-place")
+    (message "set bookmark at current point")))
+
+(defun go-to-last-bookmark ()
+  (interactive)
+  (bookmark-jump "current-place"))
+
+(global-set-key (kbd "C-c m") 'set-current-bookmark)
+(global-set-key (kbd "C-c j") 'go-to-last-bookmark)
+
 (load "~/.emacs.d/themes/color-theme-molokai.el")
 (color-theme-molokai)
-
-;; desktop.el
-(load "desktop") 
-(desktop-load-default) 
-(desktop-read)

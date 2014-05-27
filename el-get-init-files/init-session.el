@@ -1,1 +1,1 @@
-(add-hook 'after-init-hook 'session-initialize)
+;;(add-hook 'after-init-hook 'session-initialize)
