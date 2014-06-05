@@ -212,3 +212,13 @@ occurence of CHAR."
 
 (load "~/.emacs.d/themes/color-theme-molokai.el")
 (color-theme-molokai)
+
+;;自动添加匹配括号
+(electric-pair-mode 1)
+(setq electric-pair-pairs '(
+                            (?\" . ?\")
+                            (?\{ . ?\})
+                            (?\' . ?\')
+                            (?\[ . ?\])
+                            ))
+
