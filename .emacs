@@ -93,7 +93,7 @@
 (global-set-key (kbd "C-c C-_")'comment-or-uncomment-region)
 
 ;; 翻页更加平滑
-(setq scroll-margin 5 scroll-conservatively 10000)
+(setq scroll-margin 2 scroll-conservatively 10000)
 
 ;; window move
 (global-set-key (kbd "C-c w k") 'windmove-up)
@@ -214,11 +214,11 @@ occurence of CHAR."
 (color-theme-molokai)
 
 ;;自动添加匹配括号
-(electric-pair-mode 1)
-(setq electric-pair-pairs '(
-                            (?\" . ?\")
-                            (?\{ . ?\})
-                            (?\' . ?\')
-                            (?\[ . ?\])
-                            ))
+;; (electric-pair-mode 1)
+;; (setq electric-pair-pairs '(
+;;                             (?\" . ?\")
+;;                             (?\{ . ?\})
+;;                             (?\' . ?\')
+;;                             (?\[ . ?\])
+;;                             ))
 
