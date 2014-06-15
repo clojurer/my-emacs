@@ -1,4 +1,3 @@
-(setq my-packages
-      '(ack-and-a-half ag auto-complete browse-kill-ring color-theme dash el-get epl flx fuzzy grep-a-lot grizzl helm lua-mode monokai-theme pkg-info popup projectile s session))
-(el-get 'sync my-packages)
-
+(setq my-packages                                                                                                                                                                        
+      '(ack-and-a-half ag auto-complete browse-kill-ring cc-mode+ cider cl-lib clojure-mode color-theme dash el-get epl flx fuzzy git-emacs git-modes grep-a-lot grizzl helm hungry-dele\
+te lua-mode magit monokai-theme paredit pkg-info popup projectile protobuf-mode rainbow-delimiters ruby-mode s session smartparens)) 
