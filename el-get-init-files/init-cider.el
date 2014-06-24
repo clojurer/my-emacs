@@ -3,7 +3,7 @@
 (setq cider-prefer-local-resources t)
 (setq cider-repl-pop-to-buffer-on-connect nil)
 (setq cider-auto-select-error-buffer nil)
-;(setq cider-show-error-buffer 'only-in-repl)
+(setq cider-show-error-buffer 'only-in-repl)
 (setq nrepl-buffer-name-separator "-")
 (setq nrepl-buffer-name-show-port t)
 (setq cider-repl-display-in-current-window t)

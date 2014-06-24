@@ -194,8 +194,9 @@ occurence of CHAR."
 
 (global-set-key (kbd "C-c C-n") 'end-of-defun)
 (global-set-key (kbd "C-c C-p") 'beginning-of-defun)
-(global-set-key (kbd "C-c ;") 'beginning-of-buffer)
-(global-set-key (kbd "C-c '") 'end-of-buffer)
+;; 这2个快捷键比较好按，更好的键，给更重要的操作
+;; (global-set-key (kbd "C-c ;") 'beginning-of-buffer)
+;; (global-set-key (kbd "C-c '") 'end-of-buffer)
 
 (defun set-current-bookmark ()
   (interactive)
@@ -212,7 +213,6 @@ occurence of CHAR."
 
 (load "~/.emacs.d/themes/color-theme-molokai.el")
 (color-theme-molokai)
-
 ;;自动添加匹配括号
 ;; (electric-pair-mode 1)
 ;; (setq electric-pair-pairs '(
