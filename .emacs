@@ -16,7 +16,7 @@
 ;;禁用启动画面
 (setq inhibit-startup-message t)
 
-;; set mark
+;;set mark
 (global-set-key (kbd "C-z") 'set-mark-command)
 
 ;;设置删除纪录
@@ -162,41 +162,12 @@
 ;;   "Increase emacs's font-size acording emacs-font-size-pair-list."
 ;;   (interactive) (emacs-step-font-size -1))
 
-;; (global-set-key (kbd "C-<right>") 'increase-emacs-font-size)
-;; (global-set-key (kbd "C-<left>") 'decrease-emacs-font-size)
+;;(global-set-key (kbd "C-<right>") 'increase-emacs-font-size)
+;;(global-set-key (kbd "C-<left>") 'decrease-emacs-font-size)
 ;;字体（只能在UI下用，nw模式下要注释这段代码）
-
-;; goto char
-(defun wy-go-to-char (n char)
-  "Move forward to Nth occurence of CHAR.
-Typing `wy-go-to-char-key' again will move forwad to the next Nth
-occurence of CHAR."
-  (interactive "p\ncGo to char forward: ")
-
-  (while (char-equal (read-char)
-		     char)
-    (search-forward (string char) nil nil n))
-  (setq unread-command-events (list last-input-event)))
-
-(defun wy-go-to-char-back (n char)
-  "Move forward to Nth occurence of CHAR.
-Typing `wy-go-to-char-key' again will move forwad to the next Nth
-occurence of CHAR."
-  (interactive "p\ncGo to char backward: ")
-  (search-backward (string char) nil nil n)
-  (while (char-equal (read-char)
-		     char)
-    (search-backward (string char) nil nil n))
-  (setq unread-command-events (list last-input-event)))
-
-(define-key global-map (kbd "C-c l") 'wy-go-to-char-back)
-(define-key global-map (kbd "C-c k") 'wy-go-to-char)
 
 (global-set-key (kbd "C-c C-n") 'end-of-defun)
 (global-set-key (kbd "C-c C-p") 'beginning-of-defun)
-;; 这2个快捷键比较好按，更好的键，给更重要的操作
-;; (global-set-key (kbd "C-c ;") 'beginning-of-buffer)
-;; (global-set-key (kbd "C-c '") 'end-of-buffer)
 
 (defun set-current-bookmark ()
   (interactive)
@@ -213,12 +184,3 @@ occurence of CHAR."
 
 (load "~/.emacs.d/themes/color-theme-molokai.el")
 (color-theme-molokai)
-;;自动添加匹配括号
-;; (electric-pair-mode 1)
-;; (setq electric-pair-pairs '(
-;;                             (?\" . ?\")
-;;                             (?\{ . ?\})
-;;                             (?\' . ?\')
-;;                             (?\[ . ?\])
-;;                             ))
-

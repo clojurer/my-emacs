@@ -4,3 +4,4 @@
 (setq projectile-switch-project-action 'projectile-find-dir)
 (setq projectile-find-dir-includes-top-level t)
 (setq projectile-completion-system 'grizzl)
+(global-set-key (kbd "C-c p a") 'projectile-ag)
