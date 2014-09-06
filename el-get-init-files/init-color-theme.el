@@ -1,1 +1,1 @@
-(color-theme-gnome2)
+;; (color-theme-gnome2)

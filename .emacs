@@ -55,14 +55,15 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(ag-arguments (quote ("--smart-case" "--nogroup" "--column" "--all-text")))
  '(blink-cursor-mode nil)
  '(column-number-mode t)
- '(custom-safe-themes (quote ("9fd20670758db15cc4d0b4442a74543888d2e445646b25f2755c65dcd6f1504b" default)))
+ '(custom-safe-themes (quote ("1e7e097ec8cb1f8c3a912d7e1e0331caeed49fef6cff220be63bd2a6ba4cc365" "fc5fcb6f1f1c1bc01305694c59a1a861b008c534cae8d0e48e4d5e81ad718bc6" "943bff6eada8e1796f8192a7124c1129d6ff9fbd1a0aed7b57ad2bf14201fdd4" "9a9e75c15d4017c81a2fe7f83af304ff52acfadd7dde3cb57595919ef2e8d736" "9fd20670758db15cc4d0b4442a74543888d2e445646b25f2755c65dcd6f1504b" "e53cc4144192bb4e4ed10a3fa3e7442cae4c3d231df8822f6c02f1220a0d259a" "de2c46ed1752b0d0423cde9b6401062b67a6a1300c068d5d7f67725adc6c3afb" "f41fd682a3cd1e16796068a2ca96e82cfd274e58b978156da0acce4d56f2b0d5" "978ff9496928cc94639cb1084004bf64235c5c7fb0cfbcc38a3871eb95fa88f6" "51bea7765ddaee2aac2983fac8099ec7d62dff47b708aa3595ad29899e9e9e44" "41b6698b5f9ab241ad6c30aea8c9f53d539e23ad4e3963abff4b57c0f8bf6730" "405fda54905200f202dd2e6ccbf94c1b7cc1312671894bc8eca7e6ec9e8a41a2" "9bac44c2b4dfbb723906b8c491ec06801feb57aa60448d047dbfdbd1a8650897" "1affe85e8ae2667fb571fc8331e1e12840746dae5c46112d5abb0c3a973f5f5a" default)))
  '(display-time-mode t)
  '(lua-indent-level 4)
+ '(menu-bar-mode nil)
  '(scroll-bar-mode nil)
  '(show-paren-mode t)
- '(menu-bar-mode nil)
  '(tab-width 4)
  '(tool-bar-mode nil))
 (custom-set-faces
@@ -71,9 +72,11 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  )
-;; 我讨厌波浪号后缀的文件
+
+;; 备份
+;; (setq auto-save-file-name-transforms `((".*" "~/.emacs_auto_save_file" t)))
 (setq backup-by-copying t)  ; 备份文件
-(setq backup-directory-alist '(("." . "~/.emacs_saved_file")))  ;设置备份目录
+(setq backup-directory-alist '(("." . "~/.emacs_backup_file")))  ;设置备份目录
 (setq delete-old-versions nil)  ; 删除旧的备份文件，这里取决于有没有开启 version-control
 (setq version-control t)  ; 不用单文件来备份，采用数字计数的方式
 (setq kept-new-versions 5)  ; 新的文件备份最多能保存几个
@@ -90,12 +93,12 @@
                    (dired-directory dired-directory "%b"))))
 
 ;; 注释代码
-(global-set-key (kbd "C-c C-_")'comment-or-uncomment-region)
+(global-set-key (kbd "C-c C-/")'comment-or-uncomment-region)
 
 ;; 翻页更加平滑
 (setq scroll-margin 2 scroll-conservatively 10000)
 
-;; window move
+;; window move 使用switch-window可以更高效代替
 (global-set-key (kbd "C-c w k") 'windmove-up)
 (global-set-key (kbd "C-c w j") 'windmove-down)
 (global-set-key (kbd "C-c w h") 'windmove-left)
@@ -107,7 +110,7 @@
 ;; 向前删一词
 (global-set-key (kbd "C-j") 'backward-kill-word)
 
-;;字体（只能在UI下用，nw模式下要注释这段代码）
+;; 字体（只能在UI下用，nw模式下要注释这段代码）
 ;; (defvar emacs-english-font "Monaco"
 ;;   "The font name of English.")
 
@@ -162,9 +165,9 @@
 ;;   "Increase emacs's font-size acording emacs-font-size-pair-list."
 ;;   (interactive) (emacs-step-font-size -1))
 
-;;(global-set-key (kbd "C-<right>") 'increase-emacs-font-size)
-;;(global-set-key (kbd "C-<left>") 'decrease-emacs-font-size)
-;;字体（只能在UI下用，nw模式下要注释这段代码）
+;; (global-set-key (kbd "C-<right>") 'increase-emacs-font-size)
+;; (global-set-key (kbd "C-<left>") 'decrease-emacs-font-size)
+;; 字体（只能在UI下用，nw模式下要注释这段代码）
 
 (global-set-key (kbd "C-c C-n") 'end-of-defun)
 (global-set-key (kbd "C-c C-p") 'beginning-of-defun)
@@ -184,3 +187,43 @@
 
 (load "~/.emacs.d/themes/color-theme-molokai.el")
 (color-theme-molokai)
+
+;; Smart copy, if no region active, it simply copy the current whole line
+(defadvice kill-line (before check-position activate)
+  (if (member major-mode
+              '(emacs-lisp-mode scheme-mode lisp-mode
+                                c-mode c++-mode objc-mode js-mode
+                                latex-mode plain-tex-mode))
+      (if (and (eolp) (not (bolp)))
+          (progn (forward-char 1)
+                 (just-one-space 0)
+                 (backward-char 1)))))
+ 
+(defadvice kill-ring-save (before slick-copy activate compile)
+  "When called interactively with no active region, copy a single line instead."
+  (interactive (if mark-active (list (region-beginning) (region-end))
+                 (message "Copied line")
+                 (list (line-beginning-position)
+                       (line-beginning-position 2)))))
+ 
+(defadvice kill-region (before slick-cut activate compile)
+  "When called interactively with no active region, kill a single line instead."
+  (interactive
+   (if mark-active (list (region-beginning) (region-end))
+     (list (line-beginning-position)
+           (line-beginning-position 2)))))
+ 
+;; Copy line from point to the end, exclude the line break
+(defun qiang-copy-line (arg)
+  "Copy lines (as many as prefix argument) in the kill ring"
+  (interactive "p")
+  (kill-ring-save (point)
+                  (line-end-position))
+                  ;; (line-beginning-position (+ 1 arg)))
+  (message "%d line%s copied" arg (if (= 1 arg) "" "s")))
+ 
+(global-set-key (kbd "M-k") 'qiang-copy-line)
+
+
+(require 'uniquify)
+(setq uniquify-buffer-name-style 'forward)
